@@ -58,7 +58,29 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  
 
+  function playSound(e) {  // e is the event function. The event is an object full of data describing what happened
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"`); 
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"`);
+
+    if (!audio) return; // if there is no audio, return, will stop the function from running
+    audio.currentTime = 0 // rewind to the start;
+    audio.play() // play the audio element
+    key.classList.add('playing'); 
+
+  }
+
+  function removeTransition(e) { // takes an event as parameter
+    if (e.propertyName !== 'transform') return; // skip if it is not a transform
+    // console.log(this) // this is always equal to what was called against it. Addeventlistener was called against key
+    this.classList.remove('playing');
+  };
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+  window.addEventListener('keydown', playSound);
 </script>
 
 
